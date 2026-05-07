@@ -76,7 +76,7 @@ Output a single JSON object — no markdown, no explanation, no preamble. The ob
 
 ## Parameter Ranges (PNG / JPEG in Lightroom Classic)
 
-All values must stay within these bounds. Note that `temp` uses a -100 to 100 scale, not Kelvin.
+All values must stay within these bounds. Note that `temp` uses a 2000 to 50000 scale, in Kelvin.
 
 | Parameter      | Min    | Max   | Notes                          |
 |----------------|--------|-------|--------------------------------|
