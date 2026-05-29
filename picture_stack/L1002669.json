@@ -1,0 +1,22 @@
+{
+  "crop": {
+    "angle": 0.0,
+    "aspect_ratio": "original",
+    "top": 0.0,
+    "left": 0.0,
+    "bottom": 1.0,
+    "right": 1.0
+  },
+  "basic": {
+    "exposure": 0.6,
+    "contrast": 8,
+    "highlights": -25,
+    "shadows": 50,
+    "whites": 10,
+    "blacks": -5,
+    "temp": -5,
+    "tint": 4,
+    "vibrance": 18,
+    "saturation": 0
+  }
+}

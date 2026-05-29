@@ -1,0 +1,6 @@
+<?xml version="1.0" ?>
+<x:xmpmeta xmlns:x="adobe:ns:meta/">
+  <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <rdf:Description xmlns:crs="http://ns.adobe.com/camera-raw-settings/1.0/" rdf:about="" crs:ProcessVersion="11.0" crs:Exposure2012="0.35" crs:Contrast2012="15" crs:Highlights2012="-45" crs:Shadows2012="35" crs:Whites2012="-5" crs:Blacks2012="-15" crs:Temperature="-12" crs:Tint="2" crs:Vibrance="10" crs:Saturation="-5" crs:CropAngle="0.0" crs:CropTop="0.0" crs:CropLeft="0.0" crs:CropBottom="1.0" crs:CropRight="1.0" crs:CropConstrainToWarp="1" crs:HasCrop="True" crs:CropUnit="0"/>
+  </rdf:RDF>
+</x:xmpmeta>

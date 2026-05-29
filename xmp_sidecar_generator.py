@@ -29,7 +29,6 @@ from xml.dom.minidom import parseString
 # ---------------------------------------------------------------------------
 try:
     from tkinterdnd2 import DND_FILES, TkinterDnD
-
     DND_AVAILABLE = True
 except ImportError:
     DND_AVAILABLE = False
