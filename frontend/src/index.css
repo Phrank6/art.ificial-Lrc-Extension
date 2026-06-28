@@ -1,0 +1,220 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #050608;
+    color: #F7F7F2;
+    @apply antialiased;
+  }
+}
+
+@layer utilities {
+  .suggested-dot {
+    animation: pulseGlow 1.5s ease-in-out infinite;
+  }
+  .float-badge {
+    animation: float 2s ease-in-out infinite;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* Custom range slider */
+input[type='range'] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  border-radius: 2px;
+  background: transparent;
+  cursor: pointer;
+}
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #8B5CF6;
+  cursor: pointer;
+  border: 2px solid #263040;
+  transition: background 0.15s, transform 0.15s;
+}
+input[type='range']::-webkit-slider-thumb:hover {
+  background: #a78bfa;
+  transform: scale(1.15);
+}
+input[type='range']::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #8B5CF6;
+  cursor: pointer;
+  border: 2px solid #263040;
+}
+
+/* Landing → App fade-in */
+@keyframes lumina-fadein {
+  from { opacity: 0; transform: scale(0.985); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar       { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: #0A0D12; }
+::-webkit-scrollbar-thumb { background: #263040; border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: #374151; }
+
+/* ─── Landing page: floating glass-panel background ──────────────────────── */
+.landing-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  background:
+    /* left pink bloom */
+    radial-gradient(ellipse 38% 55% at 15% 55%, rgba(255, 60, 140, 0.38), transparent 100%),
+    /* right cyan-blue bloom — large, soft, no hard edge */
+    radial-gradient(ellipse 50% 60% at 82% 52%, rgba(30, 160, 220, 0.32), transparent 100%),
+    /* centre purple haze */
+    radial-gradient(ellipse 45% 40% at 50% 40%, rgba(110, 60, 220, 0.16), transparent 100%),
+    linear-gradient(135deg, #050716 0%, #0b1028 48%, #14091f 100%);
+}
+
+/* Shared panel base */
+.floating-panel {
+  position: absolute;
+  border-radius: 42px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  will-change: transform;
+  pointer-events: none;
+}
+
+/* Left panel — orange core bleeding into magenta rim */
+.panel-left {
+  width: 360px;
+  height: 520px;
+  left: -75px;
+  top: 50%;
+  transform: translateY(-50%) rotate(-5deg);
+  background:
+    /* warm orange core */
+    radial-gradient(ellipse 70% 55% at 52% 72%, rgba(255, 100, 50, 1.00), transparent 70%),
+    /* magenta upper bloom — overlaps orange so they bleed */
+    radial-gradient(ellipse 80% 70% at 44% 38%, rgba(230, 50, 150, 0.85), transparent 72%),
+    /* wide soft pink halo binding both */
+    radial-gradient(ellipse 100% 100% at 50% 55%, rgba(200, 60, 120, 0.22), transparent 80%),
+    rgba(255, 255, 255, 0.025);
+  box-shadow:
+    0 0 120px rgba(255, 79, 140, 0.45),
+    0 0 60px  rgba(255, 100, 50, 0.30);
+  animation: floatLeft 14s ease-in-out infinite alternate;
+}
+
+/* Right-top panel — purple melts into cyan, no border line */
+.panel-right-top {
+  width: 520px;
+  height: 300px;
+  right: -125px;
+  top: 10%;
+  transform: rotate(6deg);
+  background:
+    /* purple left anchor */
+    radial-gradient(ellipse 55% 90% at 18% 85%, rgba(130, 70, 255, 0.90), transparent 70%),
+    /* cyan right anchor */
+    radial-gradient(ellipse 55% 90% at 82% 85%, rgba(30, 180, 220, 0.90), transparent 70%),
+    /* mid-blue bridge — fills the gap between purple and cyan */
+    radial-gradient(ellipse 60% 80% at 50% 85%, rgba(60, 130, 240, 0.55), transparent 65%),
+    rgba(255, 255, 255, 0.025);
+  box-shadow:
+    0 0 120px rgba(42, 168, 200, 0.40),
+    0 0 60px  rgba(124, 77, 255, 0.30);
+  animation: floatRightTop 18s ease-in-out infinite alternate;
+}
+
+/* Right-bottom panel — teal / blue-green, seamless diffusion */
+.panel-right-bottom {
+  width: 440px;
+  height: 380px;
+  right: -55px;
+  bottom: -55px;
+  background:
+    /* teal-green right core */
+    radial-gradient(ellipse 60% 65% at 72% 48%, rgba(30, 220, 195, 0.92), transparent 68%),
+    /* blue-violet left core */
+    radial-gradient(ellipse 60% 65% at 28% 54%, rgba(80, 100, 255, 0.85), transparent 68%),
+    /* aqua blend layer — sits between the two so colour walks naturally */
+    radial-gradient(ellipse 70% 70% at 50% 52%, rgba(42, 168, 220, 0.45), transparent 72%),
+    rgba(255, 255, 255, 0.025);
+  box-shadow:
+    0 0 130px rgba(0, 210, 200, 0.40),
+    0 0 70px  rgba(80, 100, 255, 0.25);
+  animation: floatRightBottom 16s ease-in-out infinite alternate;
+}
+
+/* Centre depth glow */
+.panel-center {
+  width: 620px;
+  height: 440px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -52%);
+  background:
+    radial-gradient(ellipse 70% 70% at 50% 50%, rgba(110, 60, 220, 0.10), transparent 70%),
+    rgba(255, 255, 255, 0.010);
+  border-radius: 56px;
+  box-shadow: none;
+  animation: floatCenter 22s ease-in-out infinite alternate;
+}
+
+@keyframes floatLeft {
+  from { transform: translateY(-50%) rotate(-5deg) translate3d(0, 0, 0) scale(1); }
+  to   { transform: translateY(-50%) rotate(-2deg) translate3d(35px, -28px, 0) scale(1.04); }
+}
+@keyframes floatRightTop {
+  from { transform: rotate(6deg) translate3d(0, 0, 0) scale(1); }
+  to   { transform: rotate(3deg) translate3d(-45px, 30px, 0) scale(1.03); }
+}
+@keyframes floatRightBottom {
+  from { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
+  to   { transform: translate3d(-30px, -35px, 0) rotate(-3deg) scale(1.05); }
+}
+@keyframes floatCenter {
+  from { transform: translate(-50%, -52%) scale(1); }
+  to   { transform: translate(-50%, -50%) scale(1.06); }
+}
+
+/* Readability veil */
+.landing-veil {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(5, 7, 22, 0.30) 0%,
+    rgba(5, 7, 22, 0.12) 40%,
+    rgba(5, 7, 22, 0.40) 100%
+  );
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .floating-panel { animation: none !important; }
+}
+
+/* Gradient text utility used for headline "edit" */
+.text-gradient-purple-pink {
+  background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}

@@ -1,0 +1,462 @@
+[
+  {
+    "id": "saul_leiter",
+    "name": "Saul Leiter",
+    "era": "1950s–1980s",
+    "nationality": "American",
+    "mood_descriptor": "Painterly urban poetry — colour as emotion, not decoration",
+    "keywords": {
+      "subject": ["street", "urban", "pedestrians", "windows", "reflection", "rain", "snow", "crowd"],
+      "mood": ["painterly", "intimate", "quiet", "dreamlike", "layered", "tender", "poetic"],
+      "style": ["colour abstraction", "shallow depth", "soft focus", "muted palette", "spatial ambiguity", "warm tones"]
+    },
+    "pillow_signature": {
+      "contrast_range": [0.88, 1.00],
+      "brightness_range": [1.00, 1.08],
+      "color_range": [0.80, 1.00],
+      "sharpness_range": [0.60, 0.90],
+      "grain_opacity_range": [0.04, 0.08],
+      "color_shift": { "r": 5, "g": 2, "b": -3 }
+    },
+    "system_prompt_fragment": "Edit in the style of Saul Leiter: muted, painterly colour with occasional warm amber or red accent. Pull saturation back slightly — colour should feel like watercolour seeping into paper, not a vivid print. Reduce sharpness; embrace soft edges and spatial ambiguity. Slight warm shift in midtones. Never crush shadows. The image should feel tender and unhurried, like a quiet moment glimpsed through a fogged window.",
+    "example_image_hint": "Rain-blurred window with a pedestrian silhouette, muted reds and ambers",
+    "confidence": 0.95
+  },
+  {
+    "id": "vivian_maier",
+    "name": "Vivian Maier",
+    "era": "1950s–1990s",
+    "nationality": "American",
+    "mood_descriptor": "Unflinching observation — the hidden watcher on the street",
+    "keywords": {
+      "subject": ["street", "urban", "people", "children", "reflections", "self-portrait", "working class", "Chicago", "New York"],
+      "mood": ["observational", "candid", "psychological", "raw", "slightly melancholic", "direct"],
+      "style": ["high contrast", "sharp", "geometric framing", "square format", "black and white", "decisive moment"]
+    },
+    "pillow_signature": {
+      "contrast_range": [1.20, 1.45],
+      "brightness_range": [0.92, 1.02],
+      "color_range": [0.00, 0.20],
+      "sharpness_range": [1.40, 1.80],
+      "grain_opacity_range": [0.08, 0.14],
+      "color_shift": { "r": 0, "g": 0, "b": 0 }
+    },
+    "system_prompt_fragment": "Edit in the style of Vivian Maier: near-monochrome or fully desaturated, high contrast, clinically sharp. Strong blacks, open but not blown highlights. The image should feel like a stolen glance — unsentimental and precise. Grain is present but not overwhelming. Geometric shadows and hard light are allies. Avoid warmth; the palette is cool and neutral.",
+    "example_image_hint": "Stark black-and-white street portrait, deep shadows, sharp subject",
+    "confidence": 0.92
+  },
+  {
+    "id": "fan_ho",
+    "name": "Fan Ho",
+    "era": "1950s–1970s",
+    "nationality": "Hong Kong",
+    "mood_descriptor": "Cinematic geometry — light as a living character",
+    "keywords": {
+      "subject": ["street", "urban", "alleyways", "silhouette", "fog", "Hong Kong", "light shafts", "lone figure"],
+      "mood": ["cinematic", "dramatic", "atmospheric", "lonely", "contemplative", "timeless"],
+      "style": ["extreme contrast", "directional light", "silhouette", "black and white", "graphic composition", "Expressionist"]
+    },
+    "pillow_signature": {
+      "contrast_range": [1.45, 1.70],
+      "brightness_range": [0.80, 0.95],
+      "color_range": [0.00, 0.10],
+      "sharpness_range": [1.20, 1.60],
+      "grain_opacity_range": [0.06, 0.12],
+      "color_shift": { "r": 0, "g": 0, "b": 0 }
+    },
+    "system_prompt_fragment": "Edit in the style of Fan Ho: dramatic chiaroscuro, near-black shadows with shafts of brilliant light. Fully desaturate. Push contrast hard — shadows should feel like ink. The subject, if present, should exist as a silhouette or near-silhouette against light. Think German Expressionism translated to Hong Kong streets. Atmosphere and geometry matter more than facial detail.",
+    "example_image_hint": "Lone figure silhouetted in a shaft of light through a misty alley",
+    "confidence": 0.90
+  },
+  {
+    "id": "william_eggleston",
+    "name": "William Eggleston",
+    "era": "1960s–present",
+    "nationality": "American",
+    "mood_descriptor": "The democratic eye — the American South as colour field painting",
+    "keywords": {
+      "subject": ["everyday objects", "suburban", "americana", "interiors", "roadside", "people", "cars", "diner", "South"],
+      "mood": ["banal", "eerie", "saturated", "democratic", "deadpan", "slightly unsettling"],
+      "style": ["vivid colour", "dye transfer", "flat light", "wide angle", "mundane subject elevated", "warm palette"]
+    },
+    "pillow_signature": {
+      "contrast_range": [1.05, 1.20],
+      "brightness_range": [1.00, 1.10],
+      "color_range": [1.25, 1.55],
+      "sharpness_range": [1.10, 1.40],
+      "grain_opacity_range": [0.02, 0.06],
+      "color_shift": { "r": 8, "g": 3, "b": -5 }
+    },
+    "system_prompt_fragment": "Edit in the style of William Eggleston: punchy, saturated colour that makes the ordinary feel significant. Warm the palette — reds, yellows, and greens should pop without feeling garish. Think dye-transfer prints: colours that are almost too vivid, yet feel completely natural. Slight warm push in shadows. Contrast is moderate — nothing crushed. Every detail of a mundane subject should feel worthy of a museum wall.",
+    "example_image_hint": "Vivid red ceiling or everyday object saturated into significance",
+    "confidence": 0.93
+  },
+  {
+    "id": "stephen_shore",
+    "name": "Stephen Shore",
+    "era": "1970s–present",
+    "nationality": "American",
+    "mood_descriptor": "Deadpan America — sunlight as a neutral witness",
+    "keywords": {
+      "subject": ["suburban", "roadside", "americana", "landscape", "architecture", "everyday", "diners", "motels"],
+      "mood": ["deadpan", "open", "flat", "contemplative", "sun-drenched", "matter-of-fact"],
+      "style": ["large format", "natural light", "warm daylight", "low contrast", "open shadows", "horizontal composition"]
+    },
+    "pillow_signature": {
+      "contrast_range": [0.90, 1.05],
+      "brightness_range": [1.05, 1.15],
+      "color_range": [1.05, 1.20],
+      "sharpness_range": [1.10, 1.30],
+      "grain_opacity_range": [0.00, 0.04],
+      "color_shift": { "r": 6, "g": 4, "b": -8 }
+    },
+    "system_prompt_fragment": "Edit in the style of Stephen Shore: open, sun-drenched, matter-of-fact. Lift shadows — nothing should feel dark or brooding. Warm the image toward afternoon sunlight (push yellows and reds slightly). Colour is present but never dramatic. Contrast stays low; the light is honest, not theatrical. The image should feel like a photograph that refuses to editorialize — pure observation under open sky.",
+    "example_image_hint": "Sunlit American roadside scene, warm tones, open shadows, flat light",
+    "confidence": 0.91
+  },
+  {
+    "id": "martin_parr",
+    "name": "Martin Parr",
+    "era": "1980s–present",
+    "nationality": "British",
+    "mood_descriptor": "Garish satire — colour as social commentary",
+    "keywords": {
+      "subject": ["crowds", "tourists", "beach", "food", "consumer culture", "British seaside", "leisure", "people"],
+      "mood": ["satirical", "garish", "bright", "humorous", "uncomfortable", "hyper-real"],
+      "style": ["flash photography", "extreme saturation", "close-up", "harsh light", "over-exposed highlights", "colour clash"]
+    },
+    "pillow_signature": {
+      "contrast_range": [1.15, 1.35],
+      "brightness_range": [1.05, 1.20],
+      "color_range": [1.45, 1.75],
+      "sharpness_range": [1.30, 1.60],
+      "grain_opacity_range": [0.00, 0.04],
+      "color_shift": { "r": 10, "g": -2, "b": -8 }
+    },
+    "system_prompt_fragment": "Edit in the style of Martin Parr: aggressive saturation, flash-lit harshness, colours that clash and shout. Push reds and magentas. Highlights can be slightly hot. Nothing should feel tasteful or restrained — the image should feel like it's slightly too much, on purpose. This is social photography as comedy and critique. Skin tones go warm and slightly ruddy. Every colour competes for attention.",
+    "example_image_hint": "Hyper-saturated beach scene, garish colours, flash-lit crowd",
+    "confidence": 0.92
+  },
+  {
+    "id": "daido_moriyama",
+    "name": "Daido Moriyama",
+    "era": "1960s–present",
+    "nationality": "Japanese",
+    "mood_descriptor": "Are, bure, boke — raw, blurred, out-of-focus urgency",
+    "keywords": {
+      "subject": ["street", "urban", "Tokyo", "night", "alley", "dogs", "signage", "fragmented figures"],
+      "mood": ["raw", "urgent", "unstable", "aggressive", "fragmented", "visceral", "alienated"],
+      "style": ["extreme contrast", "heavy grain", "blur", "black and white", "high contrast", "snapshot aesthetic"]
+    },
+    "pillow_signature": {
+      "contrast_range": [1.45, 1.65],
+      "brightness_range": [0.82, 0.95],
+      "color_range": [0.00, 0.15],
+      "sharpness_range": [0.70, 1.20],
+      "grain_opacity_range": [0.14, 0.20],
+      "color_shift": { "r": 0, "g": 0, "b": 0 }
+    },
+    "system_prompt_fragment": "Edit in the style of Daido Moriyama: push contrast to the edge of crushing. Near-monochrome or fully desaturated. Heavy grain — it should feel like the image is disintegrating. Shadows go nearly black. Highlights can blow slightly. The image should feel urgent, unstable, and slightly violent in its energy. Sharpness is secondary to atmosphere. Think are-bure-boke: rough, blurred, out-of-focus as an intentional aesthetic.",
+    "example_image_hint": "Grainy, high-contrast black-and-white Tokyo street at night",
+    "confidence": 0.94
+  },
+  {
+    "id": "hiroshi_sugimoto",
+    "name": "Hiroshi Sugimoto",
+    "era": "1970s–present",
+    "nationality": "Japanese",
+    "mood_descriptor": "Time made visible — stillness at the edge of eternity",
+    "keywords": {
+      "subject": ["seascape", "theatre", "diorama", "architecture", "minimal", "horizon", "long exposure"],
+      "mood": ["meditative", "minimal", "timeless", "still", "philosophical", "serene", "vast"],
+      "style": ["extreme tonal range", "black and white", "long exposure", "perfect horizon", "minimal", "large format precision"]
+    },
+    "pillow_signature": {
+      "contrast_range": [1.10, 1.30],
+      "brightness_range": [0.95, 1.05],
+      "color_range": [0.00, 0.05],
+      "sharpness_range": [1.50, 2.00],
+      "grain_opacity_range": [0.00, 0.03],
+      "color_shift": { "r": 0, "g": 0, "b": 0 }
+    },
+    "system_prompt_fragment": "Edit in the style of Hiroshi Sugimoto: pristine black and white, perfect tonal gradation from near-black to near-white with no clipping in either direction. Surgical sharpness. No grain. The image should feel like it was made with infinite care and infinite time. Midtones are luminous. Shadows are deep but open. The overall feeling is of extreme stillness — photography as meditation.",
+    "example_image_hint": "Perfect grey seascape or theatre interior, flawless tonal gradation",
+    "confidence": 0.89
+  },
+  {
+    "id": "gregory_crewdson",
+    "name": "Gregory Crewdson",
+    "era": "1990s–present",
+    "nationality": "American",
+    "mood_descriptor": "Cinematic suburban uncanny — twilight as psychological state",
+    "keywords": {
+      "subject": ["suburban", "interiors", "twilight", "staged", "lone figure", "American town", "domestic", "night"],
+      "mood": ["uncanny", "cinematic", "psychological", "eerie", "melancholic", "staged", "surreal", "lonely"],
+      "style": ["twilight palette", "blue-green shadows", "warm interior light", "cinematic depth", "dramatic colour contrast", "film still"]
+    },
+    "pillow_signature": {
+      "contrast_range": [1.15, 1.35],
+      "brightness_range": [0.85, 0.98],
+      "color_range": [1.10, 1.30],
+      "sharpness_range": [1.20, 1.50],
+      "grain_opacity_range": [0.02, 0.06],
+      "color_shift": { "r": -5, "g": 2, "b": 12 }
+    },
+    "system_prompt_fragment": "Edit in the style of Gregory Crewdson: push shadows toward cool blue-green. Warm interior or artificial light sources contrast against cold exterior. The image should feel like a film still — perfectly composed, slightly ominous, emotionally ambiguous. Deepen the overall mood by pulling brightness slightly. Colour contrast between warm and cool zones is the defining characteristic. Think suburban twilight as psychological portrait.",
+    "example_image_hint": "Twilight suburban scene with warm window light against cold blue exterior",
+    "confidence": 0.90
+  },
+  {
+    "id": "sally_mann",
+    "name": "Sally Mann",
+    "era": "1980s–present",
+    "nationality": "American",
+    "mood_descriptor": "Southern Gothic — beauty, decay, and memory as one",
+    "keywords": {
+      "subject": ["landscape", "children", "South", "nature", "decay", "family", "rural", "body", "summer"],
+      "mood": ["gothic", "elegiac", "intimate", "haunting", "lush", "ambiguous", "timeless", "beautiful-and-dark"],
+      "style": ["wet plate collodion", "high contrast", "vignetting", "light leaks", "warm sepia", "soft grain", "tonal richness"]
+    },
+    "pillow_signature": {
+      "contrast_range": [1.15, 1.40],
+      "brightness_range": [0.90, 1.05],
+      "color_range": [0.20, 0.50],
+      "sharpness_range": [0.80, 1.20],
+      "grain_opacity_range": [0.08, 0.15],
+      "color_shift": { "r": 18, "g": 8, "b": -15 }
+    },
+    "system_prompt_fragment": "Edit in the style of Sally Mann: warm sepia-adjacent tone, as if processed through wet plate collodion. Pull saturation toward near-monochrome but retain warm amber in the highlights. Introduce slight vignetting effect through brightness gradient. Grain should feel organic, not digital. Contrast is present but never harsh — shadows are rich, not crushed. The image should feel like a memory: beautiful, slightly decayed, and emotionally heavy.",
+    "example_image_hint": "Warm sepia-toned landscape or figure, organic grain, vignette edges",
+    "confidence": 0.88
+  },
+  {
+    "id": "sebastiao_salgado",
+    "name": "Sebastião Salgado",
+    "era": "1970s–present",
+    "nationality": "Brazilian",
+    "mood_descriptor": "Epic humanism — suffering and dignity rendered monumental",
+    "keywords": {
+      "subject": ["people", "workers", "poverty", "landscape", "nature", "crowds", "labour", "documentary", "portrait"],
+      "mood": ["epic", "humanitarian", "dramatic", "dignified", "monumental", "powerful", "sorrowful"],
+      "style": ["black and white", "dramatic light", "deep shadow", "high contrast", "silver gelatin", "grand scale"]
+    },
+    "pillow_signature": {
+      "contrast_range": [1.30, 1.55],
+      "brightness_range": [0.88, 1.00],
+      "color_range": [0.00, 0.10],
+      "sharpness_range": [1.30, 1.70],
+      "grain_opacity_range": [0.05, 0.10],
+      "color_shift": { "r": 0, "g": 0, "b": 0 }
+    },
+    "system_prompt_fragment": "Edit in the style of Sebastião Salgado: powerful black and white with a full silver gelatin tonal range. Deep, open shadows — not crushed, but rich. Highlights are luminous. Contrast is high but controlled, never losing detail in either extreme. The image should feel monumental and dignified. Sharpness serves the subject's humanity. Grain is subtle — this is precision printing, not snapshot.",
+    "example_image_hint": "Monumental black-and-white portrait or landscape with silver gelatin depth",
+    "confidence": 0.91
+  },
+  {
+    "id": "steve_mccurry",
+    "name": "Steve McCurry",
+    "era": "1980s–present",
+    "nationality": "American",
+    "mood_descriptor": "Saturated humanity — vivid colour, universal emotion",
+    "keywords": {
+      "subject": ["portrait", "people", "Asia", "travel", "culture", "eyes", "colour", "documentary"],
+      "mood": ["vivid", "emotional", "warm", "human", "intense", "accessible", "universal"],
+      "style": ["Kodachrome palette", "rich saturation", "warm tones", "sharp subject", "blurred background", "golden hour"]
+    },
+    "pillow_signature": {
+      "contrast_range": [1.10, 1.30],
+      "brightness_range": [1.02, 1.12],
+      "color_range": [1.30, 1.55],
+      "sharpness_range": [1.30, 1.60],
+      "grain_opacity_range": [0.02, 0.06],
+      "color_shift": { "r": 10, "g": 5, "b": -8 }
+    },
+    "system_prompt_fragment": "Edit in the style of Steve McCurry: rich, Kodachrome-style saturation with a warm push toward reds and golds. Skin tones should glow. Contrast is moderate — open enough to retain detail, present enough for drama. Sharpness on the subject is high. The background can fall slightly softer. Think golden hour warmth even in midday light. Colour is lush but not garish — it serves the humanity of the subject.",
+    "example_image_hint": "Warm, saturated portrait with vivid colour and golden tones",
+    "confidence": 0.92
+  },
+  {
+    "id": "henri_cartier_bresson",
+    "name": "Henri Cartier-Bresson",
+    "era": "1930s–1970s",
+    "nationality": "French",
+    "mood_descriptor": "The decisive moment — geometry and life colliding in a fraction of a second",
+    "keywords": {
+      "subject": ["street", "people", "movement", "geometry", "Europe", "decisive moment", "candid", "everyday"],
+      "mood": ["precise", "balanced", "humanist", "elegant", "spontaneous", "classical"],
+      "style": ["black and white", "natural light", "geometric composition", "fine grain", "balanced tones", "reportage"]
+    },
+    "pillow_signature": {
+      "contrast_range": [1.10, 1.30],
+      "brightness_range": [0.95, 1.05],
+      "color_range": [0.00, 0.10],
+      "sharpness_range": [1.20, 1.50],
+      "grain_opacity_range": [0.04, 0.09],
+      "color_shift": { "r": 0, "g": 0, "b": 0 }
+    },
+    "system_prompt_fragment": "Edit in the style of Henri Cartier-Bresson: classic black and white with balanced, natural tonal range. Neither high contrast nor flat — the tones should feel like a well-printed gelatin silver print. Fine grain, present but unobtrusive. Sharpness is honest. Nothing should feel manipulated or dramatic; the editing disappears and the geometry of the moment speaks. Midtones are the hero.",
+    "example_image_hint": "Classic black-and-white street moment, balanced tones, geometric composition",
+    "confidence": 0.93
+  },
+  {
+    "id": "diane_arbus",
+    "name": "Diane Arbus",
+    "era": "1950s–1971",
+    "nationality": "American",
+    "mood_descriptor": "The unflinching gaze — outsiders rendered with unsettling tenderness",
+    "keywords": {
+      "subject": ["portrait", "people", "outsiders", "identity", "direct gaze", "urban", "psychological", "intimate"],
+      "mood": ["unsettling", "tender", "direct", "psychological", "raw", "confrontational", "empathetic"],
+      "style": ["square format", "flash", "flat light", "medium contrast", "fine-to-medium grain", "direct flash", "clinical"]
+    },
+    "pillow_signature": {
+      "contrast_range": [1.10, 1.30],
+      "brightness_range": [0.95, 1.08],
+      "color_range": [0.00, 0.15],
+      "sharpness_range": [1.20, 1.50],
+      "grain_opacity_range": [0.06, 0.12],
+      "color_shift": { "r": 0, "g": 0, "b": 0 }
+    },
+    "system_prompt_fragment": "Edit in the style of Diane Arbus: desaturate fully or near-fully. Flat, direct light — as if lit by a bare flash with no fill. Moderate contrast, not dramatic. The subject should feel exposed, not hidden. Grain is present and honest. Midtones are slightly cool. Nothing should romanticize or soften the subject — the edit is in service of unflinching clarity. Shadows are open enough to see everything.",
+    "example_image_hint": "Direct, flat-lit black-and-white portrait, honest and slightly uncomfortable",
+    "confidence": 0.91
+  },
+  {
+    "id": "nan_goldin",
+    "name": "Nan Goldin",
+    "era": "1970s–present",
+    "nationality": "American",
+    "mood_descriptor": "The ballad of intimacy — colour snapshots of love, pain, and survival",
+    "keywords": {
+      "subject": ["portrait", "intimacy", "interiors", "friends", "night", "domestic", "LGBTQ+", "vulnerable", "bedroom"],
+      "mood": ["intimate", "raw", "warm", "vulnerable", "emotional", "domestic", "confessional", "tender"],
+      "style": ["snapshot", "colour", "warm tungsten light", "direct flash", "saturated shadows", "diary photography"]
+    },
+    "pillow_signature": {
+      "contrast_range": [1.05, 1.20],
+      "brightness_range": [0.95, 1.08],
+      "color_range": [1.10, 1.35],
+      "sharpness_range": [0.90, 1.20],
+      "grain_opacity_range": [0.08, 0.15],
+      "color_shift": { "r": 15, "g": 5, "b": -10 }
+    },
+    "system_prompt_fragment": "Edit in the style of Nan Goldin: warm, tungsten-pushed colour — reds and oranges dominate interior scenes. Colour is emotional, not accurate. Grain is present and embraced. Flash creates flat pockets of light against warm shadows. The image should feel like a page from a diary: unguarded, slightly overexposed in the highlights, rich in shadow colour. Saturation stays warm and personal, never clinical.",
+    "example_image_hint": "Warm, grainy interior portrait with tungsten-orange light and raw emotion",
+    "confidence": 0.90
+  },
+  {
+    "id": "wolfgang_tillmans",
+    "name": "Wolfgang Tillmans",
+    "era": "1990s–present",
+    "nationality": "German",
+    "mood_descriptor": "Contemporary life at face value — light itself as subject",
+    "keywords": {
+      "subject": ["everyday", "youth culture", "interiors", "abstract", "light", "people", "queer culture", "objects"],
+      "mood": ["contemporary", "open", "democratic", "curious", "light-filled", "observational", "tender"],
+      "style": ["natural light", "colour accuracy", "low contrast", "soft", "open shadows", "photographic abstraction"]
+    },
+    "pillow_signature": {
+      "contrast_range": [0.85, 1.00],
+      "brightness_range": [1.05, 1.15],
+      "color_range": [0.95, 1.10],
+      "sharpness_range": [0.90, 1.20],
+      "grain_opacity_range": [0.02, 0.06],
+      "color_shift": { "r": 2, "g": 3, "b": 2 }
+    },
+    "system_prompt_fragment": "Edit in the style of Wolfgang Tillmans: light, open, and honest. Pull contrast back — this is not dramatic photography. Colours are accurate and slightly airy. Shadows lift toward grey rather than black. The image should feel like natural light observed without intervention. Slight overall brightness lift. Nothing should call attention to itself as an edit — the goal is luminous neutrality that makes the subject feel seen rather than staged.",
+    "example_image_hint": "Airy, open-shadow daylight scene, neutral accurate colour, soft contrast",
+    "confidence": 0.88
+  },
+  {
+    "id": "joel_meyerowitz",
+    "name": "Joel Meyerowitz",
+    "era": "1960s–present",
+    "nationality": "American",
+    "mood_descriptor": "Cape Light — warmth, colour, and the American summer hour",
+    "keywords": {
+      "subject": ["landscape", "beach", "suburban", "americana", "golden hour", "seascape", "people", "summer"],
+      "mood": ["warm", "luminous", "joyful", "open", "golden", "contemplative", "celebratory"],
+      "style": ["large format", "warm light", "open shadow", "colour richness", "golden hour", "Cape Cod palette"]
+    },
+    "pillow_signature": {
+      "contrast_range": [0.95, 1.10],
+      "brightness_range": [1.05, 1.18],
+      "color_range": [1.15, 1.35],
+      "sharpness_range": [1.10, 1.40],
+      "grain_opacity_range": [0.00, 0.04],
+      "color_shift": { "r": 12, "g": 6, "b": -10 }
+    },
+    "system_prompt_fragment": "Edit in the style of Joel Meyerowitz: push toward golden warmth — this is the colour of late afternoon on a summer beach. Warm the shadows as well as the highlights; the entire image basks in the same golden light. Saturation is present but natural — rich, not garish. Open the shadows; nothing should be dark here. The image should feel like a celebration of light and colour as pure pleasure.",
+    "example_image_hint": "Golden hour beach or landscape, warm saturated light, open and joyful",
+    "confidence": 0.91
+  },
+  {
+    "id": "rinko_kawauchi",
+    "name": "Rinko Kawauchi",
+    "era": "2000s–present",
+    "nationality": "Japanese",
+    "mood_descriptor": "Whispered light — fragile, luminous, and small",
+    "keywords": {
+      "subject": ["everyday", "nature", "light", "fragile", "small", "domestic", "insects", "fire", "water", "intimate"],
+      "mood": ["delicate", "luminous", "quiet", "poetic", "transcendent", "fragile", "wonder"],
+      "style": ["pastel", "overexposed highlights", "soft light", "washed out", "dream-like", "pale palette", "intimate scale"]
+    },
+    "pillow_signature": {
+      "contrast_range": [0.80, 0.95],
+      "brightness_range": [1.10, 1.25],
+      "color_range": [0.75, 0.90],
+      "sharpness_range": [0.70, 1.00],
+      "grain_opacity_range": [0.03, 0.07],
+      "color_shift": { "r": 8, "g": 6, "b": 4 }
+    },
+    "system_prompt_fragment": "Edit in the style of Rinko Kawauchi: wash the image in soft, pale light. Lift brightness until highlights are almost blown — this is intentional luminosity, not overexposure error. Pull back saturation toward pastels. Contrast is low; the image floats rather than anchors. Warm the overall palette very slightly. The image should feel like a held breath — fragile, luminous, and on the verge of disappearing into white light.",
+    "example_image_hint": "Pale, washed-out everyday moment, luminous light, near-pastel palette",
+    "confidence": 0.89
+  },
+  {
+    "id": "alex_webb",
+    "name": "Alex Webb",
+    "era": "1970s–present",
+    "nationality": "American",
+    "mood_descriptor": "Layered heat — colour, chaos, and light in the tropics",
+    "keywords": {
+      "subject": ["street", "tropics", "colour", "shadow", "light", "Caribbean", "Mexico", "layered", "crowd"],
+      "mood": ["intense", "chaotic", "vibrant", "hot", "layered", "complex", "sensory"],
+      "style": ["extreme colour", "deep shadow", "multiple layers", "bright highlight", "tropical light", "complex composition"]
+    },
+    "pillow_signature": {
+      "contrast_range": [1.30, 1.55],
+      "brightness_range": [0.90, 1.05],
+      "color_range": [1.35, 1.65],
+      "sharpness_range": [1.20, 1.50],
+      "grain_opacity_range": [0.03, 0.08],
+      "color_shift": { "r": 8, "g": -2, "b": -6 }
+    },
+    "system_prompt_fragment": "Edit in the style of Alex Webb: push colour to maximum intensity within the frame's logic — reds burn, blues vibrate, greens sing. Shadows go very deep, almost black, creating graphic negative space. Highlights stay hot. The image should feel like equatorial noon: overwhelming, layered, visually dense. Multiple colour planes compete simultaneously. This is colour photography at its most complex and demanding.",
+    "example_image_hint": "Intense tropical street scene, deep shadows, vibrant competing colours",
+    "confidence": 0.92
+  },
+  {
+    "id": "ernst_haas",
+    "name": "Ernst Haas",
+    "era": "1950s–1980s",
+    "nationality": "Austrian-American",
+    "mood_descriptor": "Motion as colour painting — the first master of colour photojournalism",
+    "keywords": {
+      "subject": ["motion", "urban", "colour", "abstract", "street", "sport", "blur", "light"],
+      "mood": ["dynamic", "lyrical", "painterly", "energetic", "vibrant", "abstract"],
+      "style": ["motion blur", "colour saturation", "Kodachrome", "abstract colour", "impressionistic", "layered exposure"]
+    },
+    "pillow_signature": {
+      "contrast_range": [1.10, 1.30],
+      "brightness_range": [1.00, 1.12],
+      "color_range": [1.25, 1.50],
+      "sharpness_range": [0.50, 0.90],
+      "grain_opacity_range": [0.04, 0.10],
+      "color_shift": { "r": 6, "g": 2, "b": -4 }
+    },
+    "system_prompt_fragment": "Edit in the style of Ernst Haas: rich, Kodachrome-era saturation with a slight softness or motion quality. Colour is the primary subject — it should vibrate with energy. Sharpness is secondary; the image can breathe and blur slightly. Warm the palette toward the rich golds and reds of Kodachrome. The image should feel dynamic and painterly simultaneously, as if photographed at the threshold of abstraction.",
+    "example_image_hint": "Vibrant, slightly blurred colour study, Kodachrome warmth, motion energy",
+    "confidence": 0.86
+  }
+]
