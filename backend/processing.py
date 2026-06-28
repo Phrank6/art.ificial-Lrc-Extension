@@ -47,9 +47,20 @@ class EditParams:
     vignette: float = 0.0       # -100 to +100
     grain: float = 0.0          # 0 to 100
     fade: float = 0.0           # 0 to 100
-    # Crop
-    crop_ratio: Optional[str] = None   # "free","1:1","4:3","16:9","3:2","4:5"
-    crop_rotation: float = 0.0  # -45 to +45
+    # Per-channel brightness offsets (applied after tint)
+    r_offset: float = 0.0       # -50 to +50
+    g_offset: float = 0.0       # -50 to +50
+    b_offset: float = 0.0       # -50 to +50
+    # Film softness — Gaussian blur at low radius (0–1.0 maps to radius 0.3–0.8)
+    film_softness: float = 0.0  # 0 to 1.0
+    # Crop — two modes (interactive coords take priority over ratio preset)
+    crop_ratio: Optional[str] = None    # "free","1:1","4:3","16:9","3:2","4:5"
+    crop_rotation: float = 0.0          # -45 to +45
+    # Interactive crop box — percentages (0-100) of image dimensions
+    crop_x: Optional[float] = None      # left edge %
+    crop_y: Optional[float] = None      # top edge %
+    crop_w: Optional[float] = None      # width %
+    crop_h: Optional[float] = None      # height %
 
 
 @dataclass
@@ -279,6 +290,122 @@ def apply_grain(img: Image.Image, value: float) -> Image.Image:
     return Image.fromarray(arr)
 
 
+def apply_channel_offsets(img: Image.Image, r: float, g: float, b: float) -> Image.Image:
+    """Per-channel brightness offset (additive). Handles RGB and RGBA — alpha preserved."""
+    if r == 0 and g == 0 and b == 0:
+        return img
+    original_mode = img.mode
+    arr = np.array(img.convert("RGB"), dtype=np.float32)
+    arr[:, :, 0] = np.clip(arr[:, :, 0] + r, 0, 255)
+    arr[:, :, 1] = np.clip(arr[:, :, 1] + g, 0, 255)
+    arr[:, :, 2] = np.clip(arr[:, :, 2] + b, 0, 255)
+    result = Image.fromarray(arr.astype(np.uint8), "RGB")
+    if original_mode == "RGBA":
+        result = result.convert("RGBA")
+        result.putalpha(img.getchannel("A"))
+    return result
+
+
+# ─── Persona-style Pillow transforms ─────────────────────────────────────────
+# Separate from the additive pipeline above; uses ImageEnhance multipliers
+# as defined in each persona's pillow_signature.
+
+def apply_grain_noise(img: Image.Image, opacity: float) -> Image.Image:
+    """Blend a Gaussian noise layer at *opacity*. Handles RGB and RGBA."""
+    if opacity <= 0.0:
+        return img
+    original_mode = img.mode
+    rgb = img.convert("RGB")
+    arr = np.array(rgb, dtype=np.float32)
+    noise = np.random.normal(0, 25.0, arr.shape).astype(np.float32)
+    blended = np.clip(arr + noise * opacity * 4.0, 0, 255).astype(np.uint8)
+    result = Image.fromarray(blended, "RGB")
+    if original_mode == "RGBA":
+        result = result.convert("RGBA")
+        result.putalpha(img.getchannel("A"))
+    return result
+
+
+def apply_color_shift_persona(img: Image.Image, r: int, g: int, b: int) -> Image.Image:
+    """Fixed per-channel brightness offset from pillow_signature.color_shift.
+    Handles both RGB and RGBA — alpha channel is preserved unchanged."""
+    if r == 0 and g == 0 and b == 0:
+        return img
+    original_mode = img.mode
+    arr = np.array(img.convert("RGB"), dtype=np.float32)
+    arr[:, :, 0] = np.clip(arr[:, :, 0] + r, 0, 255)
+    arr[:, :, 1] = np.clip(arr[:, :, 1] + g, 0, 255)
+    arr[:, :, 2] = np.clip(arr[:, :, 2] + b, 0, 255)
+    result = Image.fromarray(arr.astype(np.uint8), "RGB")
+    if original_mode == "RGBA":
+        result = result.convert("RGBA")
+        result.putalpha(img.getchannel("A"))
+    return result
+
+
+def apply_persona_transforms(
+    img: Image.Image,
+    pillow_signature: dict,
+    claude_params: dict,
+) -> Image.Image:
+    """Apply persona-constrained Pillow transforms.
+
+    claude_params values are clipped to the persona's pillow_signature ranges
+    before application — values outside bounds are silently clamped.
+
+    Order: Contrast → Brightness → Color → Sharpness → Grain → ColorShift.
+
+    Args:
+        img: Source PIL image (RGB or RGBA).
+        pillow_signature: The ``pillow_signature`` dict from the persona JSON.
+        claude_params: Dict returned by Claude; may be flat or nested under
+            a ``"pillow"`` key.  Expected keys: contrast, brightness, color,
+            sharpness, grain_opacity.
+    """
+    sig = pillow_signature
+
+    def _clip(value: float, range_pair: list) -> float:
+        lo, hi = range_pair
+        return max(float(lo), min(float(hi), float(value)))
+
+    def _mid(range_pair: list) -> float:
+        return (range_pair[0] + range_pair[1]) / 2.0
+
+    # Claude may nest Pillow params under a "pillow" key
+    p = claude_params.get("pillow", claude_params)
+
+    contrast      = _clip(p.get("contrast",      _mid(sig["contrast_range"])),      sig["contrast_range"])
+    brightness    = _clip(p.get("brightness",    _mid(sig["brightness_range"])),    sig["brightness_range"])
+    color         = _clip(p.get("color",         _mid(sig["color_range"])),          sig["color_range"])
+    sharpness     = _clip(p.get("sharpness",     _mid(sig["sharpness_range"])),      sig["sharpness_range"])
+    grain_opacity = _clip(p.get("grain_opacity", _mid(sig["grain_opacity_range"])), sig["grain_opacity_range"])
+
+    img = ImageEnhance.Contrast(img).enhance(contrast)
+    img = ImageEnhance.Brightness(img).enhance(brightness)
+    img = ImageEnhance.Color(img).enhance(color)
+    img = ImageEnhance.Sharpness(img).enhance(sharpness)
+
+    if grain_opacity > 0.005:
+        img = apply_grain_noise(img, grain_opacity)
+
+    shift = sig.get("color_shift", {"r": 0, "g": 0, "b": 0})
+    r_s = shift.get("r", 0)
+    g_s = shift.get("g", 0)
+    b_s = shift.get("b", 0)
+    if r_s or g_s or b_s:
+        img = apply_color_shift_persona(img, r_s, g_s, b_s)
+
+    return img
+
+
+def apply_film_softness(img: Image.Image, value: float) -> Image.Image:
+    if value == 0:
+        return img
+    # Map 0–1.0 → radius 0.3–0.8 (subtle, filmic diffusion)
+    radius = 0.3 + value * 0.5
+    return img.filter(ImageFilter.GaussianBlur(radius=radius))
+
+
 def apply_fade(img: Image.Image, value: float) -> Image.Image:
     if value == 0:
         return img
@@ -299,29 +426,41 @@ RATIO_MAP = {
 }
 
 
-def apply_crop(img: Image.Image, ratio: Optional[str], rotation: float) -> Image.Image:
-    # Apply rotation first
+def apply_crop(img: Image.Image, ratio: Optional[str], rotation: float,
+               crop_x: Optional[float] = None, crop_y: Optional[float] = None,
+               crop_w: Optional[float] = None, crop_h: Optional[float] = None) -> Image.Image:
+
+    # 1. Rotation first (expand canvas so corners aren't clipped)
     if rotation != 0:
         img = img.rotate(-rotation, expand=True, resample=Image.BICUBIC)
 
-    if not ratio or ratio == "free":
+    w, h = img.size
+
+    # 2a. Interactive crop box (takes priority) — percentages → pixels
+    if crop_x is not None and crop_y is not None and crop_w is not None and crop_h is not None:
+        left   = max(0, int(crop_x / 100 * w))
+        top    = max(0, int(crop_y / 100 * h))
+        right  = min(w, int((crop_x + crop_w) / 100 * w))
+        bottom = min(h, int((crop_y + crop_h) / 100 * h))
+        if right > left and bottom > top:
+            return img.crop((left, top, right, bottom))
         return img
 
+    # 2b. Ratio preset (centered crop)
+    if not ratio or ratio == "free":
+        return img
     if ratio not in RATIO_MAP:
         return img
 
     target_w, target_h = RATIO_MAP[ratio]
-    w, h = img.size
     target_aspect = target_w / target_h
     current_aspect = w / h
 
     if current_aspect > target_aspect:
-        # Crop width
         new_w = int(h * target_aspect)
         left = (w - new_w) // 2
         img = img.crop((left, 0, left + new_w, h))
     else:
-        # Crop height
         new_h = int(w / target_aspect)
         top = (h - new_h) // 2
         img = img.crop((0, top, w, top + new_h))
@@ -342,12 +481,15 @@ def process_image(img: Image.Image, params: EditParams) -> Image.Image:
     img = apply_brightness(img, params.brightness)
     img = apply_temperature(img, params.temperature)
     img = apply_tint(img, params.tint)
+    img = apply_channel_offsets(img, params.r_offset, params.g_offset, params.b_offset)
+    img = apply_film_softness(img, params.film_softness)
     img = apply_saturation(img, params.saturation)
     img = apply_vibrance(img, params.vibrance)
     img = apply_clarity(img, params.clarity)
     img = apply_texture(img, params.texture)
     img = apply_dehaze(img, params.dehaze)
-    img = apply_crop(img, params.crop_ratio, params.crop_rotation)
+    img = apply_crop(img, params.crop_ratio, params.crop_rotation,
+                     params.crop_x, params.crop_y, params.crop_w, params.crop_h)
     img = apply_vignette(img, params.vignette)
     img = apply_grain(img, params.grain)
     img = apply_fade(img, params.fade)

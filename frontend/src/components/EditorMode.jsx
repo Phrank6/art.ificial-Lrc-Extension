@@ -2,33 +2,46 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import { processImage, DEFAULT_PARAMS, PARAM_RANGES, PARAM_SECTIONS, paramLabel } from '../api'
 import CropTool from './CropTool'
 
-export default function EditorMode({ originalB64, filename, initialParams = {}, onBack }) {
+// previewB64 — downscaled (≤1200px), used for every live slider call
+// exportB64  — full-res original, used only when the user clicks Export
+export default function EditorMode({ previewB64, exportB64, filename, initialParams = {}, onDone }) {
   const [params, setParams] = useState({ ...DEFAULT_PARAMS, ...initialParams })
   const [editedSrc, setEditedSrc] = useState(null)
   const [loading, setLoading] = useState(false)
+  const [exporting, setExporting] = useState(false)
   const [showCrop, setShowCrop] = useState(false)
   const [splitPos, setSplitPos] = useState(50)
   const [dragging, setDragging] = useState(false)
   const [openSections, setOpenSections] = useState({ Light: true, Color: true, Detail: false, Effects: false })
   const debounceRef = useRef(null)
+  const abortRef = useRef(null)
   const containerRef = useRef(null)
 
-  const originalSrc = `data:image/png;base64,${originalB64}`
+  const originalSrc = `data:image/jpeg;base64,${previewB64}`
 
+  // Live previews always use the downscaled image — fast.
+  // AbortController ensures only the latest slider position resolves;
+  // any queued in-flight request is cancelled immediately.
   const scheduleProcess = useCallback((p) => {
     if (debounceRef.current) clearTimeout(debounceRef.current)
     debounceRef.current = setTimeout(async () => {
+      if (abortRef.current) abortRef.current.abort()
+      const controller = new AbortController()
+      abortRef.current = controller
+
       setLoading(true)
       try {
-        const b64 = await processImage(originalB64, filename, p)
-        setEditedSrc(`data:image/png;base64,${b64}`)
+        const b64 = await processImage(previewB64, filename, p, controller.signal)
+        if (!controller.signal.aborted) {
+          setEditedSrc(`data:image/jpeg;base64,${b64}`)
+        }
       } catch (e) {
-        console.error(e)
+        if (e.name !== 'AbortError') console.error(e)
       } finally {
-        setLoading(false)
+        if (!controller.signal.aborted) setLoading(false)
       }
-    }, 300)
-  }, [originalB64, filename])
+    }, 120)   // 120 ms debounce
+  }, [previewB64, filename])
 
   useEffect(() => {
     scheduleProcess(params)
@@ -51,17 +64,27 @@ export default function EditorMode({ originalB64, filename, initialParams = {}, 
   }
 
   function handleCropChange(crop) {
-    const next = { ...params, crop_ratio: crop.ratio, crop_rotation: crop.rotation }
+    // crop = { crop_x, crop_y, crop_w, crop_h, crop_rotation, crop_ratio }
+    const next = { ...params, ...crop }
     setParams(next)
     scheduleProcess(next)
   }
 
-  function handleExport() {
-    if (!editedSrc) return
-    const a = document.createElement('a')
-    a.href = editedSrc
-    a.download = `edited_${filename.replace(/\.[^.]+$/, '')}.png`
-    a.click()
+  async function handleExport() {
+    setExporting(true)
+    try {
+      const fullB64 = await processImage(exportB64, filename, params)
+      const a = document.createElement('a')
+      a.href = `data:image/png;base64,${fullB64}`
+      a.download = `edited_${filename.replace(/\.[^.]+$/, '')}.png`
+      a.click()
+      // Return to chat after export
+      onDone()
+    } catch (e) {
+      console.error('Export failed:', e)
+    } finally {
+      setExporting(false)
+    }
   }
 
   // Split drag
@@ -81,20 +104,26 @@ export default function EditorMode({ originalB64, filename, initialParams = {}, 
     setSplitPos(Math.min(100, Math.max(0, ((clientX - rect.left) / rect.width) * 100)))
   }
 
-  const cropParams = { ratio: params.crop_ratio || 'free', rotation: params.crop_rotation || 0 }
+  const cropParams = {
+    crop_x: params.crop_x, crop_y: params.crop_y,
+    crop_w: params.crop_w, crop_h: params.crop_h,
+    crop_rotation: params.crop_rotation || 0,
+    crop_ratio: params.crop_ratio || null,
+  }
+  const hasCrop = params.crop_x != null || params.crop_rotation !== 0 || params.crop_ratio
 
   return (
     <div className="flex flex-col h-full bg-zinc-950">
       {/* Top bar */}
       <div className="flex items-center justify-between px-5 py-3 border-b border-zinc-800 flex-shrink-0">
         <button
-          onClick={onBack}
+          onClick={onDone}
           className="flex items-center gap-1.5 text-zinc-400 hover:text-zinc-200 transition-colors text-sm"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
           </svg>
-          Back
+          Back to Chat
         </button>
         <h1 className="text-sm font-semibold text-zinc-300 truncate max-w-xs">{filename}</h1>
         <div className="flex gap-2">
@@ -106,13 +135,22 @@ export default function EditorMode({ originalB64, filename, initialParams = {}, 
           </button>
           <button
             onClick={handleExport}
-            disabled={!editedSrc}
+            disabled={!editedSrc || exporting}
             className="px-3 py-1.5 bg-violet-600 hover:bg-violet-500 disabled:opacity-40 text-white rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5"
           >
-            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-            </svg>
-            Export PNG
+            {exporting ? (
+              <>
+                <div className="w-3.5 h-3.5 border border-white border-t-transparent rounded-full animate-spin" />
+                Exporting…
+              </>
+            ) : (
+              <>
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                Export PNG
+              </>
+            )}
           </button>
         </div>
       </div>
@@ -127,39 +165,34 @@ export default function EditorMode({ originalB64, filename, initialParams = {}, 
           onMouseUp={onMouseUp}
           onMouseLeave={onMouseUp}
         >
-          {/* Edited */}
+          {/* Original — always visible immediately, no loading gate */}
+          <img
+            src={originalSrc}
+            className="absolute inset-0 w-full h-full object-contain bg-zinc-900"
+            alt="original"
+            draggable={false}
+          />
+
+          {/* Edited result — overlaid once the first backend call resolves.
+              clip-path keeps both images at identical element dimensions so
+              object-contain renders them at exactly the same scale. */}
           {editedSrc && (
             <img
               src={editedSrc}
               className="absolute inset-0 w-full h-full object-contain"
+              style={{ clipPath: `inset(0 0 0 ${splitPos}%)` }}
               alt="edited"
               draggable={false}
             />
           )}
 
-          {/* Original clipped */}
+          {/* Divider — only once we have something to compare */}
           {editedSrc && (
             <div
-              className="absolute inset-0 overflow-hidden"
-              style={{ width: `${splitPos}%` }}
-            >
-              <img
-                src={originalSrc}
-                className="absolute inset-0 w-full h-full object-contain bg-zinc-900"
-                style={{ width: `${10000 / splitPos}%`, maxWidth: 'none' }}
-                alt="original"
-                draggable={false}
-              />
-            </div>
-          )}
-
-          {/* Divider */}
-          {editedSrc && (
-            <div
-              className="absolute top-0 bottom-0 w-0.5 bg-white"
+              className="absolute top-0 bottom-0 w-0.5 bg-white pointer-events-none"
               style={{ left: `${splitPos}%`, transform: 'translateX(-50%)' }}
             >
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white shadow-xl flex items-center justify-center">
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white shadow-xl flex items-center justify-center pointer-events-auto cursor-col-resize">
                 <svg className="w-4 h-4 text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 9l-3 3 3 3M16 9l3 3-3 3" />
                 </svg>
@@ -168,26 +201,18 @@ export default function EditorMode({ originalB64, filename, initialParams = {}, 
           )}
 
           {/* Labels */}
+          <div className="absolute top-3 left-3 bg-black/60 text-white text-xs px-2 py-1 rounded-md font-medium backdrop-blur-sm pointer-events-none">ORIGINAL</div>
           {editedSrc && (
-            <>
-              <div className="absolute top-3 left-3 bg-black/60 text-white text-xs px-2 py-1 rounded-md font-medium backdrop-blur-sm pointer-events-none">ORIGINAL</div>
-              <div className="absolute top-3 right-3 bg-violet-600/80 text-white text-xs px-2 py-1 rounded-md font-medium backdrop-blur-sm pointer-events-none">EDITED</div>
-            </>
+            <div className="absolute top-3 right-3 bg-violet-600/80 text-white text-xs px-2 py-1 rounded-md font-medium backdrop-blur-sm pointer-events-none">EDITED</div>
           )}
 
-          {/* Loading spinner */}
+          {/* Loading pill — overlaid on the image while a request is in flight */}
           {loading && (
             <div className="absolute inset-0 flex items-end justify-center pb-6 pointer-events-none">
-              <div className="bg-black/50 backdrop-blur-sm text-white text-xs px-3 py-1.5 rounded-full flex items-center gap-2">
+              <div className="bg-black/60 backdrop-blur-sm text-white text-xs px-3 py-1.5 rounded-full flex items-center gap-2">
                 <div className="w-3 h-3 border border-white border-t-transparent rounded-full animate-spin" />
-                Processing...
+                Processing…
               </div>
-            </div>
-          )}
-
-          {!editedSrc && !loading && (
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-10 h-10 border-2 border-violet-400 border-t-transparent rounded-full animate-spin" />
             </div>
           )}
 
@@ -202,7 +227,7 @@ export default function EditorMode({ originalB64, filename, initialParams = {}, 
                   d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4" />
               </svg>
               Crop & Rotate
-              {(cropParams.ratio !== 'free' || cropParams.rotation !== 0) && (
+              {hasCrop && (
                 <span className="w-2 h-2 rounded-full bg-violet-400" />
               )}
             </button>
@@ -246,6 +271,7 @@ export default function EditorMode({ originalB64, filename, initialParams = {}, 
 
       {showCrop && (
         <CropTool
+          imageSrc={originalSrc}
           cropParams={cropParams}
           onChange={handleCropChange}
           onClose={() => setShowCrop(false)}
@@ -293,8 +319,8 @@ function ParamRow({ paramKey, value, onChange, onReset }) {
         </div>
       </div>
 
-      <div className="relative">
-        <div className="h-1 bg-zinc-700 rounded-full">
+      <div className="relative py-2">
+        <div className="h-2 bg-zinc-700 rounded-full">
           {/* Zero line indicator */}
           {range.min < 0 && (
             <div
@@ -325,8 +351,8 @@ function ParamRow({ paramKey, value, onChange, onReset }) {
           step={range.step}
           value={value}
           onChange={e => onChange(parseFloat(e.target.value))}
-          className="absolute inset-x-0 top-0 w-full opacity-0 h-5 cursor-pointer"
-          style={{ marginTop: '-8px', zIndex: 10 }}
+          className="absolute inset-x-0 inset-y-0 w-full opacity-0 cursor-pointer"
+          style={{ zIndex: 10 }}
         />
       </div>
     </div>
