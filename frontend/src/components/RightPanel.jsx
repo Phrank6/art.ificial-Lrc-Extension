@@ -236,7 +236,13 @@ export default function RightPanel({
       setLoading(true)
       try {
         const chatMsgs = [...messages, userMsg]
-          .filter(m => !m.image && m.content !== '___thinking___' && !m.editedB64)
+          .filter(m =>
+            !m.image &&
+            !m.editedB64 &&
+            typeof m.content === 'string' &&
+            m.content.trim() &&
+            m.content !== '___thinking___'
+          )
           .map(m => ({ role: m.role, content: m.content }))
         const reply = await askClaudeChat(chatMsgs, apiKey)
         setMessages(prev => [...prev, { role: 'assistant', content: reply }])
