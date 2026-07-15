@@ -191,7 +191,7 @@ Reference {persona["name"]} by name in tutorial_steps reasoning."""
     try:
         client = anthropic.Anthropic(api_key=req.api_key)
         response = client.messages.create(
-            model="claude-sonnet-4-20250514",
+            model="claude-sonnet-5",
             max_tokens=2048,
             system=system_prompt,
             messages=[

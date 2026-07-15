@@ -229,7 +229,7 @@ export async function askClaude(imageB64, userMessage, apiKey) {
   const client = new Anthropic({ apiKey, dangerouslyAllowBrowser: true })
 
   const response = await client.messages.create({
-    model: 'claude-sonnet-4-20250514',
+    model: 'claude-sonnet-5',
     max_tokens: 2048,
     system: CLAUDE_SYSTEM_PROMPT,
     messages: [
@@ -301,7 +301,7 @@ export async function askClaudeEditMultiturn(imageB64, apiHistory, apiKey) {
   })
 
   const response = await client.messages.create({
-    model: 'claude-sonnet-4-20250514',
+    model: 'claude-sonnet-5',
     max_tokens: 2048,
     system: CLAUDE_SYSTEM_PROMPT,
     messages,
@@ -346,7 +346,7 @@ export async function askClaudeChat(messages, apiKey) {
   const client = new Anthropic({ apiKey, dangerouslyAllowBrowser: true })
 
   const response = await client.messages.create({
-    model: 'claude-sonnet-4-20250514',
+    model: 'claude-sonnet-5',
     max_tokens: 1024,
     system: 'You are a helpful photography assistant. Answer questions about photography, camera settings, composition, and photo editing techniques in a friendly, concise way.',
     messages,
@@ -425,7 +425,7 @@ export async function analyzeImage(imageB64, apiKey) {
   const client = new Anthropic({ apiKey, dangerouslyAllowBrowser: true })
 
   const response = await client.messages.create({
-    model: 'claude-sonnet-4-20250514',
+    model: 'claude-sonnet-5',
     max_tokens: 512,
     system: `Analyze this photo and respond ONLY with valid JSON (no markdown, no code fences):
 {
@@ -508,7 +508,7 @@ Respond ONLY with valid JSON (no markdown, no code fences) in this exact format:
 ${PARAM_RULES}`
 
   const response = await client.messages.create({
-    model: 'claude-sonnet-4-20250514',
+    model: 'claude-sonnet-5',
     max_tokens: 2048,
     system: systemPrompt,
     messages: [
@@ -549,7 +549,7 @@ export async function analyzeCustomStyle(referenceImagesB64, apiKey) {
   }))
 
   const response = await client.messages.create({
-    model: 'claude-sonnet-4-20250514',
+    model: 'claude-sonnet-5',
     max_tokens: 512,
     system: 'You are a photography style analyst. Study these reference photos and describe the consistent visual style across them in 2–3 sentences for use as a photo editing style guide. Focus on: tonal qualities, color grading, contrast characteristics, mood, and any distinctive recurring visual treatment.',
     messages: [
