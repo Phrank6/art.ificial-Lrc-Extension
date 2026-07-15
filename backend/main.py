@@ -217,8 +217,9 @@ Reference {persona["name"]} by name in tutorial_steps reasoning."""
     except Exception as e:
         raise HTTPException(status_code=502, detail=f"Claude API error: {str(e)}")
 
-    # Parse Claude's JSON response
-    text = response.content[0].text
+    # Parse Claude's JSON response. Newer models can return multiple content
+    # blocks (e.g. thinking before text) — find the first text block.
+    text = next((b.text for b in response.content if b.type == "text"), "")
     try:
         claude_params = json.loads(text)
     except json.JSONDecodeError:

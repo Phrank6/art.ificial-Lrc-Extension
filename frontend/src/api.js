@@ -164,6 +164,14 @@ function clampTutorialSteps(steps) {
 
 // ─── Claude API ───────────────────────────────────────────────────────────────
 
+// Newer Claude models can return multiple content blocks (e.g. thinking blocks
+// before the text). Always extract the first text block rather than assuming
+// content[0] is text — otherwise .text is undefined and chat bubbles render empty.
+function extractText(response) {
+  const block = response.content.find(b => b.type === 'text')
+  return block?.text ?? ''
+}
+
 // Shared param-range rules injected into every Claude system prompt
 const PARAM_RULES = `STRICT value ranges — never exceed these:
 - exposure: -5 to +5
@@ -253,7 +261,7 @@ export async function askClaude(imageB64, userMessage, apiKey) {
     ],
   })
 
-  const text = response.content[0].text
+  const text = extractText(response)
   let result
   try {
     result = JSON.parse(text)
@@ -307,7 +315,7 @@ export async function askClaudeEditMultiturn(imageB64, apiHistory, apiKey) {
     messages,
   })
 
-  const text = response.content[0].text
+  const text = extractText(response)
   let result
   try {
     result = JSON.parse(text)
@@ -352,7 +360,7 @@ export async function askClaudeChat(messages, apiKey) {
     messages,
   })
 
-  return response.content[0].text
+  return extractText(response)
 }
 
 // ─── Backend persona endpoints ────────────────────────────────────────────────
@@ -448,7 +456,7 @@ Keywords should describe: scene type, mood, lighting conditions, subject matter,
     ],
   })
 
-  const text = response.content[0].text
+  const text = extractText(response)
   try {
     return JSON.parse(text)
   } catch {
@@ -522,7 +530,7 @@ ${PARAM_RULES}`
     ],
   })
 
-  const text = response.content[0].text
+  const text = extractText(response)
   let result
   try {
     result = JSON.parse(text)
@@ -563,5 +571,5 @@ export async function analyzeCustomStyle(referenceImagesB64, apiKey) {
     ],
   })
 
-  return response.content[0].text
+  return extractText(response)
 }
